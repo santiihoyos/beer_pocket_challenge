@@ -15,33 +15,32 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
 @RunWith(JUnit4::class)
+@OptIn(ExperimentalCoroutinesApi::class)
 class GePaginatedCharactersUserCaseImplTest {
 
     @Test
-    @OptIn(ExperimentalCoroutinesApi::class)
     fun `test any getCharacters page`() = runTest {
         val repoMock = mock<BeerRepository>()
-        whenever(repoMock.getBeersByPage(any(), any(), any())).thenReturn(
+        whenever(repoMock.getBeersByPage(any(), any())).thenReturn(
             Result.success(CharacterMocks.characterResponses)
         )
         val getPaginatedCharactersImpl = GetPaginatedBeerImpl(
             itemsPerPage = 3,
-            characterRepository = repoMock
+            beerRepository = repoMock
         )
         val result = getPaginatedCharactersImpl.getBeerByPage(1)
         assert(result.isSuccess && result.getOrNull()?.count() == CharacterMocks.page1.count())
     }
 
     @Test
-    @OptIn(ExperimentalCoroutinesApi::class)
     fun `test failure when Repository fails`() = runTest {
         val repoMock = mock<BeerRepository>()
-        whenever(repoMock.getBeersByPage(any(), any(), any())).thenReturn(
+        whenever(repoMock.getBeersByPage(any(), any())).thenReturn(
             Result.failure(DataError.NotFoundError)
         )
         val getPaginatedCharactersImpl = GetPaginatedBeerImpl(
             itemsPerPage = 3,
-            characterRepository = repoMock
+            beerRepository = repoMock
         )
         val result = getPaginatedCharactersImpl.getBeerByPage(1)
         assert(result.isFailure && result.exceptionOrNull() is BeerError.UnknownBeerError)

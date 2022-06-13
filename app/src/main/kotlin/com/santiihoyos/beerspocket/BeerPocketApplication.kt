@@ -17,11 +17,7 @@ class BeerPocketApplication : Application() {
             androidContext(this@BeerPocketApplication)
             modules(
                 appModule,
-                getApiModule(
-                    apiBaseUrl = BuildConfig.API_BASE_URL,
-                    publicKey = BuildConfig.API_PUB_KEY,
-                    privateKey = BuildConfig.API_PRIV_KEY,
-                ),
+                getApiModule(apiBaseUrl = BuildConfig.API_BASE_URL),
                 charactersModule
             )
         }

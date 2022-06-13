@@ -11,7 +11,8 @@ fun BeerResponse.toCharacter(): Beer {
         id = this.id,
         name = this.name,
         description = this.description,
-        imageUrl = this.thumbnail?.path,
-        imageExtension = this.thumbnail?.extension
+        imageUrl = this.imageUrl,
+        abv = this.abv,
+        ibu = this.ibu,
     )
 }

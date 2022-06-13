@@ -15,9 +15,8 @@ class GetPaginatedBeerImpl(
 
     override suspend fun getBeerByPage(page: Int): Result<List<Beer>> {
         val result = beerRepository.getBeersByPage(
-            limit = itemsPerPage,
-            offset = page * itemsPerPage,
-            orderBy = "name"
+            perPage = itemsPerPage,
+            page = page,
         )
         return if (result.isSuccess && result.getOrNull() != null) {
             Result.success(

@@ -12,9 +12,8 @@ interface BeerRepository {
      * @return HeroesResponse with server response
      */
     suspend fun getBeersByPage(
-        orderBy: String,
-        offset: Int,
-        limit: Int
+        page: Int,
+        perPage: Int
     ): Result<List<BeerResponse>>
 
     /**

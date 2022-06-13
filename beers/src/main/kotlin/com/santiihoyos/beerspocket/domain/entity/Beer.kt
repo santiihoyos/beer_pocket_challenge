@@ -25,38 +25,15 @@ data class Beer(
      * The base image url.
      * With this url image can not be loaded directly
      */
-    private val imageUrl: String?,
+    val imageUrl: String?,
 
     /**
-     * File extension of image
-     */
-    private val imageExtension: String?
-) {
-
-    /**
-     * Resolve image url for 200x200px used in lists for example to avoid overflow memory
      *
-     * @return String with public image url
      */
-    fun getPreviewImageUrl(): String? = imageUrl?.let { _imageUrl ->
-
-        return@let imageExtension?.let { _imageExtension ->
-            "$_imageUrl/standard_xlarge.$_imageExtension".replace(
-                "http",
-                "https"
-            )
-        }
-    }
+    val abv: Float,
 
     /**
-     * Resolve image url for 500x500px used in lists for example to avoid overflow memory
      *
-     * @return String with public image url
      */
-    fun getImageDetailUrl(): String? = imageUrl?.let { _imageUrl ->
-
-        return@let imageExtension?.let { _imageExtension ->
-            "$_imageUrl/standard_fantastic.$_imageExtension".replace("http", "https")
-        }
-    }
-}
+    val ibu: Float,
+)

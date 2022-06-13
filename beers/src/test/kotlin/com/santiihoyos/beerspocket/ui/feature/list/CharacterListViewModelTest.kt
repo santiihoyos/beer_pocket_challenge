@@ -17,10 +17,10 @@ import org.mockito.kotlin.*
  * See [testing documentation](http://d.android.com/tools/testing).
  */
 @RunWith(JUnit4::class)
+@OptIn(ExperimentalCoroutinesApi::class)
 class CharacterListViewModelTest {
 
     @Test
-    @OptIn(ExperimentalCoroutinesApi::class)
     fun `test init uiState is loading`() = runTest {
         val getUseCaseMock = mock<GetPaginatedBeersUseCase>()
         whenever(getUseCaseMock.getBeerByPage(any())).then {
@@ -35,7 +35,6 @@ class CharacterListViewModelTest {
     }
 
     @Test
-    @OptIn(ExperimentalCoroutinesApi::class)
     fun `test uiState is loading with CharacterPagingSource`() = runTest {
         val getUseCaseMock = mock<GetPaginatedBeersUseCase>()
         whenever(getUseCaseMock.getBeerByPage(any())).then {
@@ -46,11 +45,11 @@ class CharacterListViewModelTest {
             runTest {
                 BeerPagingSource(
                     getUseCaseMock::getBeerByPage,
-                    viewModel::onLoadCharactersListener
+                    viewModel::onLoadBeersListener
                 )
             }
         }
-        viewModel.loadCharactersPager()
+        viewModel.loadBeersPager()
         assert(
             viewModel.uiState.beersListPager != null &&
                     viewModel.uiState.isLoading &&
@@ -59,7 +58,6 @@ class CharacterListViewModelTest {
     }
 
     @Test
-    @OptIn(ExperimentalCoroutinesApi::class)
     fun `test when load some page success isLoading is false`() = runTest {
         val getUseCaseMock = mock<GetPaginatedBeersUseCase>()
         val viewModel = BeerListViewModel(getUseCaseMock)
@@ -67,27 +65,26 @@ class CharacterListViewModelTest {
             runTest {
                 BeerPagingSource(
                     { Result.success(CharacterMocks.page1) },
-                    viewModel::onLoadCharactersListener
+                    viewModel::onLoadBeersListener
                 )
             }
         }
-        viewModel.loadCharactersPager()
+        viewModel.loadBeersPager()
         assert(
             viewModel.uiState.beersListPager != null && viewModel.uiState.isLoading
         )
     }
 
     @Test
-    @OptIn(ExperimentalCoroutinesApi::class)
     fun `test uiState is not loading after some load`() = runTest {
         val getUseCaseMock = mock<GetPaginatedBeersUseCase>()
         val viewModel = BeerListViewModel(getUseCaseMock)
         val pagingSource = BeerPagingSource(
             { Result.success(CharacterMocks.page1) },
-            viewModel::onLoadCharactersListener
+            viewModel::onLoadBeersListener
         )
         whenever(getUseCaseMock.getBeerPagingSource(any())).then { pagingSource }
-        viewModel.loadCharactersPager()
+        viewModel.loadBeersPager()
         pagingSource.load(PagingSource.LoadParams.Refresh(key = 1, loadSize = 3, false))
         assert(
             !viewModel.uiState.isLoading && viewModel.uiState.errorText == null &&
@@ -96,16 +93,15 @@ class CharacterListViewModelTest {
     }
 
     @Test
-    @OptIn(ExperimentalCoroutinesApi::class)
     fun `test uiState is not loading and there is errorText on fail load`() = runTest {
         val getUseCaseMock = mock<GetPaginatedBeersUseCase>()
         val viewModel = BeerListViewModel(getUseCaseMock)
         val pagingSource = BeerPagingSource(
             { Result.failure(Exception()) },
-            viewModel::onLoadCharactersListener
+            viewModel::onLoadBeersListener
         )
         whenever(getUseCaseMock.getBeerPagingSource(any())).then { pagingSource }
-        viewModel.loadCharactersPager()
+        viewModel.loadBeersPager()
         pagingSource.load(PagingSource.LoadParams.Refresh(key = 1, loadSize = 3, false))
         assert(
             !viewModel.uiState.isLoading && viewModel.uiState.errorText != null &&

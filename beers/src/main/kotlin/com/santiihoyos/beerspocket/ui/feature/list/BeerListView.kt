@@ -150,15 +150,16 @@ private fun beerItem(beer: Beer, onNavigateToDetail: (beerId: String) -> Unit) {
         Column(
 
         ) {
-            val imageUrl = beer.getPreviewImageUrl()
-            AsyncImage(
-                model = imageUrl,
-                contentDescription = beer.name,
-                modifier = Modifier
-                    .width(200.dp)
-                    .height(180.dp),
-                contentScale = ContentScale.Crop
-            )
+            Surface(color = Color.White) {
+                AsyncImage(
+                    model = beer.imageUrl,
+                    contentDescription = beer.name,
+                    modifier = Modifier
+                        .width(200.dp)
+                        .height(180.dp),
+                    contentScale = ContentScale.Inside
+                )
+            }
 
             Column(
                 verticalArrangement = Arrangement.Center

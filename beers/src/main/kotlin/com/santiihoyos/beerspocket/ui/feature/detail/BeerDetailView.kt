@@ -79,13 +79,16 @@ private fun PortraitInfoContainer(
                             .height(420.dp)
                     ) {
                         AsyncImage(
-                            model = beer.getImageDetailUrl(),
+                            model = beer.imageUrl,
                             contentDescription = beer.name,
-                            contentScale = ContentScale.Crop
+                            contentScale = ContentScale.Inside,
+                            modifier = Modifier.wrapContentHeight()
                         )
                     }
                     Spacer(modifier = Modifier.height(16.dp))
                     Id(beer = beer)
+                    Ibu(beer = beer)
+                    Abv(beer = beer)
                     Description(beer = beer)
                 }
             }
@@ -118,11 +121,14 @@ fun LandscapeInfoContainer(
                             .fillMaxHeight()
                             .width(400.dp)
                     ) {
-                        AsyncImage(
-                            model = beer.getImageDetailUrl(),
-                            contentDescription = beer.name,
-                            contentScale = ContentScale.Crop
-                        )
+                        Surface(color = Color.White) {
+                            AsyncImage(
+                                model = beer.imageUrl,
+                                contentDescription = beer.name,
+                                contentScale = ContentScale.Inside,
+                                modifier = Modifier.wrapContentHeight()
+                            )
+                        }
                     }
                     Spacer(modifier = Modifier.height(70.dp))
                     Column(
@@ -130,6 +136,8 @@ fun LandscapeInfoContainer(
                         modifier = Modifier.fillMaxHeight()
                     ) {
                         Id(beer = beer)
+                        Ibu(beer = beer)
+                        Abv(beer = beer)
                         Description(beer = beer)
                     }
                 }
@@ -144,6 +152,30 @@ private fun Id(beer: Beer) {
         "ID: ${beer.id}",
         style = TextStyle(
             fontSize = 20.sp
+        ),
+        color = LocalContentColor.current,
+        modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp)
+    )
+}
+
+@Composable
+private fun Ibu(beer: Beer) {
+    Text(
+        "IBU: ${beer.ibu}",
+        style = TextStyle(
+            fontSize = 15.sp
+        ),
+        color = LocalContentColor.current,
+        modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp)
+    )
+}
+
+@Composable
+private fun Abv(beer: Beer) {
+    Text(
+        "ABV: ${beer.id}",
+        style = TextStyle(
+            fontSize = 15.sp
         ),
         color = LocalContentColor.current,
         modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp)

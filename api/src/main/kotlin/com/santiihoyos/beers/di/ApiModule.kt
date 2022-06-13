@@ -1,33 +1,29 @@
 package com.santiihoyos.beers.di
 
-import com.santiihoyos.beers.data.datasource.LocalCharacterDataSource
-import com.santiihoyos.beers.data.datasource.impl.LocalCharacterDataSourceImpl
-import com.santiihoyos.beers.data.datasource.impl.RestMarvelDataSource
+import com.santiihoyos.beers.data.datasource.LocalBeersDataSource
+import com.santiihoyos.beers.data.datasource.impl.LocalBeersDataSourceImpl
+import com.santiihoyos.beers.data.datasource.impl.RestBeersDataSource
 import com.santiihoyos.beers.data.repository.BeerRepository
-import com.santiihoyos.beers.data.repository.impl.CharacterRepositoryImpl
+import com.santiihoyos.beers.data.repository.impl.BeerRepositoryImpl
 import org.koin.dsl.module
 
 fun getApiModule(
     apiBaseUrl: String,
-    publicKey: String,
-    privateKey: String,
 ): org.koin.core.module.Module {
     return module {
         single<BeerRepository> {
-            CharacterRepositoryImpl(get(), get())
+            BeerRepositoryImpl(get(), get())
         }
 
         single {
             print("")
-            RestMarvelDataSource.getInstance(
-                baseUrl = apiBaseUrl,
-                apiKey = publicKey,
-                privateKey = privateKey,
+            RestBeersDataSource.getInstance(
+                baseUrl = apiBaseUrl
             )
         }
 
-        single<LocalCharacterDataSource> {
-            LocalCharacterDataSourceImpl()
+        single<LocalBeersDataSource> {
+            LocalBeersDataSourceImpl()
         }
     }
 }
